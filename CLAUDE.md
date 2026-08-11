@@ -69,6 +69,7 @@ Status machine: 23 nilai taskStatus (§33). Setiap status punya **tepat satu pen
 ## Konvensi
 
 - Commits: **Conventional Commits** (feat, fix, docs, chore, refactor, test).
+- **Semua proses dev dimulai dari branch `develop`** di semua repository; `main` hanya hasil merge manusia dari `develop`. `git pull` dulu sebelum mulai task/buat branch agar local sinkron remote.
 - Branch agent: `agent/<TASK-ID>-slug`, target merge `develop`.
 - Dokumentasi klien ada di `docs/operator/` (client-setup, rules-deployment, capability-registry-deploy) — klasifikasi INTERNAL vs CLIENT-SAFE ada di `docs/operator/client-setup.md`.
 - Bahasa: dokumentasi dan agent def berbahasa Indonesia.
