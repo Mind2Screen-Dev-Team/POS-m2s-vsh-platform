@@ -18,7 +18,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/pathmatch"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/pathmatch"
 	"gopkg.in/yaml.v3"
 )
 

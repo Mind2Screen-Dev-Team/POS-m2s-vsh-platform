@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/contract"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/contract"
 )
 
 // newStore menyiapkan store pada direktori sementara dengan schema asli.

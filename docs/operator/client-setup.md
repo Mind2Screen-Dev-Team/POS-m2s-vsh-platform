@@ -61,7 +61,7 @@ aplikasi; jumlah dan kombinasinya bebas.
 # clone dari lokasi repository asal yang dipakai (contoh di bawah: repo control Mind2Screen)
 git clone https://github.com/Mind2Screen-Dev-Team/m2s-vsh-platform.git
 # kalau yang dipakai adalah versi publik, clone dari situ:
-# git clone https://github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform.git
+# git clone https://github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform.git
 # contoh: unduh 2 repository aplikasi (backend + frontend)
 git clone https://github.com/Mind2Screen-Dev-Team/m2s-vsh-project-backend.git
 git clone https://github.com/Mind2Screen-Dev-Team/m2s-vsh-project-frontend.git
@@ -83,7 +83,7 @@ penggantian nama yang sama di bawah.**
 > semua referensi menunjuk ke alamatnya sendiri.
 
 **Control repository:**
-- `go.mod` — ubah `module` → `github.com/<ORGANIZATION>/<NAMA-REPOSITORY>` (contoh `github.com/<KLIEN-ORGANIZATION>/m2s-vsh-platform`, atau `github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform`)
+- `go.mod` — ubah `module` → `github.com/<ORGANIZATION>/<NAMA-REPOSITORY>` (contoh `github.com/<KLIEN-ORGANIZATION>/m2s-vsh-platform`, atau `github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform`)
 - `cmd/m2s/commands.go`, `cmd/m2s/pathcheck.go` — ubah import path mengikuti module
 - `internal/registry/registry.go`, `registry_test.go` — ubah import path mengikuti module
 - `templates/github/workflows/path-enforcement.yml` — ubah baris `repository:` → `<ORGANIZATION>/<NAMA-REPOSITORY>`

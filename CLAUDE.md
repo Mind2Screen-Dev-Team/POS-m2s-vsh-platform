@@ -2,7 +2,7 @@
 
 Repo tata kelola workflow M2S-VSH Lite v0.1.0. Bukan app source — orchestrates pengembangan lewat tim agent AI: requirement → kontrak → task → eksekusi paralel → review → QA → merge manusia.
 
-Stack: **Go 1.26** (module `github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform`), deps `santhosh-tekuri/jsonschema/v6` + `gopkg.in/yaml.v3`. CLI runner `m2s` di `cmd/m2s/`, dipanggil via `scripts/<subcommand>.sh`, bukan `bin/m2s` langsung.
+Stack: **Go 1.26** (module `github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform`), deps `santhosh-tekuri/jsonschema/v6` + `gopkg.in/yaml.v3`. CLI runner `m2s` di `cmd/m2s/`, dipanggil via `scripts/<subcommand>.sh`, bukan `bin/m2s` langsung.
 
 ## Perintah
 

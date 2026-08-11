@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/contract"
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/pathmatch"
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/registry"
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/status"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/contract"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/pathmatch"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/registry"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/status"
 )
 
 const lockTimeout = 30 * time.Second

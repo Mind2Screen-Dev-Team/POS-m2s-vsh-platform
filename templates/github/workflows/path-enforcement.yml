@@ -161,7 +161,7 @@ jobs:
         if: steps.scope.outputs.mode == 'agent'
         uses: actions/checkout@v4
         with:
-          repository: Mind2Screen-Dev-Team/public-m2s-vsh-platform
+          repository: Mind2Screen-Dev-Team/POS-m2s-vsh-platform
           path: .control
           fetch-depth: 1
 

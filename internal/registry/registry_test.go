@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Mind2Screen-Dev-Team/public-m2s-vsh-platform/internal/contract"
+	"github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/internal/contract"
 )
 
 func newRegistry(t *testing.T) *Registry {
