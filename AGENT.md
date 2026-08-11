@@ -19,6 +19,8 @@ Pelanggaran aturan ini adalah bug, bukan pilihan.
 
 ## Git & worktree
 
+- **Sebelum mulai task atau membuat branch baru, `git pull` dulu** (di branch kerja, `git pull --ff-only`) supaya local selalu sinkron dengan remote. Jangan pernah bekerja dari state yang sudah outdated.
+- **Semua proses dev dimulai dari branch `develop`** — bukan `main`. Branch task/agent selalu base dari `develop`; `main` hanya diisi lewat merge manusia dari `develop`.
 - Satu task = satu worktree. Agent kerja di worktree `.claude/worktrees/`, **tidak pernah** di main checkout.
 - Dilarang (permissions deny): `git checkout`, `git switch`, `git worktree`, `git push --force`, `git reset --hard`, `git clean -fd`.
 - Cleanup worktree/branch = manusia. Jangan hapus worktree milik task lain.
