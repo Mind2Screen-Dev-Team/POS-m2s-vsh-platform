@@ -2,7 +2,7 @@
 #
 # Memasang ruleset agent-push-restriction (bypass m2s-approver) + ruleset
 # agent-worker-restriction (kunci develop/staging dari push langsung worker)
-# pada 3 repo org. ADR-008 §Langkah ADR-001 #5, V-10.
+# pada 4 repo org. ADR-008 §Langkah ADR-001 #5, V-10.
 #
 # CATATAN (Phase 8 A7): ruleset butuh plan GitHub Team. Org ini plan Free,
 # sehingga POST ruleset apa pun -> 500. Script ini sengaja dipertahankan untuk
@@ -30,8 +30,9 @@ set -euo pipefail
 
 REPOS=(
   Mind2Screen-Dev-Team/POS-m2s-vsh-platform
-  Mind2Screen-Dev-Team/m2s-vsh-project-backend
-  Mind2Screen-Dev-Team/m2s-vsh-project-frontend
+  Mind2Screen-Dev-Team/POS-backend
+  Mind2Screen-Dev-Team/POS-android
+  Mind2Screen-Dev-Team/POS-iOS
 )
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
