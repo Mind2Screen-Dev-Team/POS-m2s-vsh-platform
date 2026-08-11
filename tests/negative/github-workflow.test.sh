@@ -260,11 +260,11 @@ for APP in backend frontend; do
   if [ -f "$f" ]; then
     # Skipped bila masih memuat org lama — berarti patch phase-8 belum
     # diterapkan manusia, bukan pelanggaran aturan bentuk.
-    if grep -q "fajarcandraaa/m2s-vsh-platform" "$f"; then
+    if grep -q "fajarcandraaa/POS-m2s-vsh-platform" "$f"; then
       echo "  SKIP [$APP] memuat org fajarcandraaa — terapkan patch docs/operator/phase-8-human-only-patches.md dulu (bukan pelanggaran bentuk)"
     else
       expect_accept "workflow app $APP" workflow "$f"
-      if ! grep -q "Mind2Screen-Dev-Team/m2s-vsh-platform" "$f"; then
+      if ! grep -q "Mind2Screen-Dev-Team/POS-m2s-vsh-platform" "$f"; then
         echo "  FAIL [$APP] tidak menyebut org Mind2Screen-Dev-Team pada checkout control repo"
         fails=1
       fi
