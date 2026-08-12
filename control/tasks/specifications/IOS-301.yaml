@@ -1,0 +1,81 @@
+# IOS-301 — Task Contract: iOS Swift Fitur Backup
+
+schema_version: "1.0"
+
+task:
+  id: IOS-301
+  title: "iOS native: halaman backup + UUID + kirim/hapus per-batch + restore"
+  type: mobile-implementation
+  project: pos-penglaris
+  status: draft
+  requirement_ids:
+    - REQ-POS-002
+    - REQ-POS-003
+    - REQ-POS-004
+    - REQ-POS-005
+    - REQ-POS-006
+    - REQ-POS-007
+    - REQ-POS-008
+    - REQ-POS-009
+    - REQ-POS-010
+    - REQ-POS-012
+    - REQ-POS-013
+  business_rule_ids:
+    - BL-IO-001
+    - BL-IO-002
+    - BL-IO-003
+    - BL-IO-004
+    - BL-IO-005
+    - BL-IO-006
+  contract_ids:
+    - CONTRACT-301
+
+ownership:
+  role: ios-developer
+  repository: POS-iOS
+  base_branch: develop
+  branch: agent/IOS-301-ios-backup
+
+execution:
+  isolation: worktree
+  platform: darwin
+  background: true
+  max_turns: 100
+  timeout_minutes: 90
+
+paths:
+  allowed:
+    - Sources/**
+    - Tests/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+    - Package.swift
+    - Package.resolved
+
+inputs:
+  - contracts/CONTRACT-301.yaml
+
+acceptance_criteria:
+  - "First run: generate UUID, simpan via Keychain/UUIDDefaults, dipakai sebagai user_id semua request backup; UUID ditampilkan di halaman Akun dengan opsi copy/ekspor manual"
+  - "Halaman backup menampilkan ukuran storage yang dipakai aplikasi (dihitung dari data lokal aplikasi, bukan total device)"
+  - "Button 'backup data' membuka bottomsheet rentang tanggal (pola bottomsheet existing dipakai form kategori); kirim per-batch maks 500 transaksi"
+  - "Batch dihapus dari storage lokal hanya setelah ack server; data utuh di device sampai backup berhasil"
+  - "Restore via GET /api/v1/backup dengan param user_id + start_date + end_date; UUID input manual untuk restore di device baru"
+  - "Kondisi offline/failure memakai screen error existing (No connection / Error state) dan tidak kehilangan data"
+  - "Unit test Swift: generate/simpan UUID, format rentang tanggal, ack → hapus per-batch, restore parse response"
+
+quality_gates:
+  - swift build
+  - swift test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - data-loss risk found

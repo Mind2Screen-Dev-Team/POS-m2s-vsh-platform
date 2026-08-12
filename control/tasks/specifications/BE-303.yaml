@@ -1,0 +1,69 @@
+# BE-303 — Task Contract: GET Backup Handler
+
+schema_version: "1.0"
+
+task:
+  id: BE-303
+  title: "Handler GET /api/v1/backup (restore data transaksi)"
+  type: backend-implementation
+  project: pos-penglaris
+  status: draft
+  requirement_ids:
+    - REQ-POS-010
+  business_rule_ids:
+    - BL-BE-004
+    - BL-BE-005
+  contract_ids:
+    - CONTRACT-301
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-303-backup-get-handler
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+shared_file_ownership:
+  - path: internal/handler/router.go
+    owner_task_id: BE-303
+    owner_role: backend-engineer
+    rationale: "BE-303 adalah satu-satunya penulis router.go pada pipeline Fase 1: menambah route GET /api/v1/backup. BE-301/BE-302 membuat berkas handler baru dan tidak menulis router."
+
+inputs:
+  - contracts/CONTRACT-301.yaml
+
+acceptance_criteria:
+  - "GET /api/v1/backup membutuhkan query param user_id (UUID), start_date, end_date (YYYY-MM-DD) wajib semua; 400 invalid param bila salah satu kurang atau format salah"
+  - "Query transaksi ke DB sesuai user_id + rentang start_date..end_date"
+  - "Bila tidak ada data pada rentang, response 404 no data dengan error schema CONTRACT-301"
+  - "Data server tidak dihapus oleh GET (restore idempoten, bisa berulang)"
+  - "Response 200 {transactions[]} valid terhadap CONTRACT-301; 500 server bila kegagalan DB"
+  - "Unit test handler: param kurang, param invalid, data ada, data kosong (404), idempotensi (dua GET berturut hasil sama)"
+
+quality_gates:
+  - go test ./...
+  - go vet ./...
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
