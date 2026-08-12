@@ -1,0 +1,62 @@
+# CONTRACT-301 — Task Contract: API Contract Backup (CONTRACT-301)
+
+schema_version: "1.0"
+
+task:
+  id: CONTRACT-301
+  title: "Tulis API contract backup transaksi (POST + GET /api/v1/backup)"
+  type: contract-change
+  project: pos-penglaris
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-006
+    - REQ-POS-007
+    - REQ-POS-010
+  business_rule_ids:
+    - BL-BE-001
+  contract_ids: []
+
+ownership:
+  role: technical-lead-system-analyst
+  repository: POS-m2s-vsh-platform
+  base_branch: develop
+  branch: agent/CONTRACT-301-backup-contract
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 50
+  timeout_minutes: 30
+
+paths:
+  allowed:
+    - contracts/CONTRACT-301.yaml
+  forbidden:
+    - .claude/**
+    - .task/**
+    - control/tasks/specifications/**
+    - docs/**
+    - cmd/**
+    - internal/**
+    - scripts/**
+
+inputs:
+  - control/requirements/REQ-202608-pos-penglaris.md
+  - contracts/CONTRACT-201.yaml   # pola format contract existing
+
+acceptance_criteria:
+  - "contracts/CONTRACT-301.yaml berisi skema POST /api/v1/backup: body user_id (UUID), start_date (ISO date), end_date (ISO date), transactions[] maks 500; response 200 per-batch {status, backup_id, stored_count}"
+  - "Skema GET /api/v1/backup: query param wajib user_id + start_date + end_date; 400 bila salah satu kurang; response {transactions[]}"
+  - "Format tanggal ISO 8601 date (YYYY-MM-DD); error schema: 400 invalid param, 404 no data, 500 server"
+  - "Skema error konsisten dengan pola contract existing (CONTRACT-201)"
+  - "CONTRACT-301.yaml relevant field tidak konflik dengan skema yang dipakai FE/IOS/BE (uuid, tanggal, batch limit)"
+
+quality_gates:
+  - make verify
+
+outputs:
+  - pull-request
+  - documentation
+
+stop_conditions:
+  - contract change required

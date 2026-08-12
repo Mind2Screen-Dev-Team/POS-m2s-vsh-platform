@@ -1,0 +1,66 @@
+# QA-301 — Task Contract: QA End-to-End Backup
+
+schema_version: "1.0"
+
+task:
+  id: QA-301
+  title: "QA end-to-end backup: kirim batch → ack → hapus device → restore"
+  type: integration
+  project: pos-penglaris
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-008
+    - REQ-POS-009
+    - REQ-POS-010
+    - REQ-POS-013
+  business_rule_ids:
+    - BL-QA-001
+  contract_ids:
+    - CONTRACT-301
+
+ownership:
+  role: qa-engineer
+  repository: POS-m2s-vsh-platform
+  base_branch: develop
+  branch: agent/QA-301-backup-e2e
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 120
+
+paths:
+  allowed:
+    - qa/CONTRACT-301/**
+    - control/tasks/status/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+    - docs/**
+    - cmd/**
+    - internal/**
+    - scripts/**
+
+inputs:
+  - contracts/CONTRACT-301.yaml
+  - qa/CONTRACT-201/QA-201-report.md   # template format report
+
+acceptance_criteria:
+  - "qa/CONTRACT-301/QA-301-report.md: summary + tabel TC + evidence (curl/log/command)"
+  - "TC E2E sukses: kirim batch → ack server → hapus batch dari device → restore via GET mengembalikan data yang sama"
+  - "TC batas payload: batch > 500 transaksi ditolak 400, device tetap menyimpan semua data (tidak ada yang terhapus)"
+  - "TC offline/failure: tanpa koneksi saat backup memunculkan error state existing dan data tetap utuh di device; setelah koneksi pulih backup bisa selesai tanpa kehilangan data"
+  - "TC restore berulang: GET tidak menghapus data server; restore kedua mengembalikan data sama"
+  - "Semua TC dengan status PASS/FAIL yang jelas per acceptance criteria CONTRACT-301"
+
+quality_gates:
+  - test -f qa/CONTRACT-301/QA-301-report.md
+
+outputs:
+  - test-report
+
+stop_conditions:
+  - forbidden path required
+  - dependency required

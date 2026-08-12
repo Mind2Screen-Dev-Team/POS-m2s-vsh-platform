@@ -1,0 +1,70 @@
+# BE-301 — Task Contract: Database Schema Backup
+
+schema_version: "1.0"
+
+task:
+  id: BE-301
+  title: "Migration PostgreSQL: tabel users, transactions, backups"
+  type: backend-implementation
+  project: pos-penglaris
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-002
+    - REQ-POS-011
+  business_rule_ids:
+    - BL-BE-002
+  contract_ids:
+    - CONTRACT-301
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-301-backup-db-schema
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+shared_file_ownership:
+  - path: internal/handler/router.go
+    owner_task_id: BE-303
+    owner_role: backend-engineer
+    rationale: "BE-303 menambah route GET /api/v1/backup pada router.go. BE-301 membaca router.go sebagai referensi pola handler, tidak menulis."
+
+inputs:
+  - contracts/CONTRACT-301.yaml
+
+acceptance_criteria:
+  - "Migration PostgreSQL membuat tabel users: device UUID sebagai primary key, created_at timestamp"
+  - "Tabel transactions: id primary key, user_id foreign key ke users, transacted_at timestamp, payload JSONB lengkap (termasuk referensi produk/kategori/metode bayar), backup_id foreign key nullable ke backups"
+  - "Tabel backups: id primary key, user_id foreign key ke users, start_date + end_date (tanggal ISO), created_at"
+  - "Semua foreign key: ON DELETE CASCADE; index pada transactions.user_id + transacted_at"
+  - "Query backup/restore per rentang berjalan efisien (index user_id + transacted_at)"
+  - "Unit test repository/query: insert + query transaksi per user per rentang tanggal"
+
+quality_gates:
+  - go test ./...
+  - go vet ./...
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - migration required
