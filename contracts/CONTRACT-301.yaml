@@ -1,0 +1,219 @@
+# CONTRACT-301 — API Contract: Backup Transaksi (POST + GET /api/v1/backup)
+#
+# Project: pos-penglaris (Fase 1 — fitur backup)
+# Sumber: REQ-POS-006, REQ-POS-007, REQ-POS-010; BL-BE-001
+# Konsumen: BE-301 (db schema), BE-302 (POST handler), BE-303 (GET handler),
+#           FE-301 (Flutter), IOS-301 (iOS Swift)
+#
+# Definisi skema HTTP untuk fitur backup data transaksi. Endpoint dipakai
+# aplikasi mobile hybrid (Android/Flutter, iOS/Swift) terhadap backend Go.
+# Format JSON + tanggal ISO 8601. Pola response/error konsisten dengan
+# CONTRACT-201 (JSON flat, HTTP code standar).
+
+schema_version: "1.0"
+
+info:
+  title: "POS Penglaris — Backup Transaksi API"
+  description: >-
+    Endpoint backup dan restore data transaksi. Client mengirim data transaksi
+    per-batch (maks 500) bersama rentang tanggal dan user_id (anonymous device
+    UUID). Server menyimpan batch, membuat rekaman backup per rentang, dan
+    membalas ack per-batch. Restore dilakukan lewat GET dengan param wajib
+    user_id + start_date + end_date.
+  version: "1.0"
+
+base_url: "/api/v1"
+default_content_type: "application/json"
+date_format: "YYYY-MM-DD (ISO 8601)"
+
+# ── Definisi bersama ──────────────────────────────────────────────────
+
+# Object transaksi yang dikirim client. Seluruh field transaksi POS asli
+# dikirim sebagai payload JSONB lengkap (termasuk referensi produk, kategori,
+# dan metode bayar); field id + user_id + transacted_at bersifat wajib.
+definitions:
+  Transaction:
+    type: object
+    required: [id, user_id, transacted_at]
+    properties:
+      id:
+        type: string
+        description: "UUID transaksi (client-generated)"
+        format: uuid
+      user_id:
+        type: string
+        description: "UUID anonymous device — harus sama dengan user_id body/query"
+        format: uuid
+      transacted_at:
+        type: string
+        description: "Waktu transaksi terjadi, RFC 3339"
+        format: date-time
+      payload:
+        type: object
+        description: "Payload JSONB lengkap: produk, kategori, metode bayar, dll"
+        additionalProperties: true
+
+  BatchLimit:
+    type: integer
+    const: 500
+    description: "Jumlah maksimum transaksi per request batch"
+
+  # Envelope error tunggal. Kode 400/404/500 konsisten dengan pola contract
+  # existing (CONTRACT-201) dan dipakai seluruh konsumen BE/FE/IOS.
+  Error:
+    type: object
+    required: [error]
+    properties:
+      error:
+        type: object
+        required: [code, message]
+        properties:
+          code:
+            type: string
+            description: "Kode kesalahan mesin-dibaca, mis. invalid_param, no_data, server_error"
+          message:
+            type: string
+            description: "Pesan kesalahan dapat dibaca manusia (Bahasa Indonesia)"
+          details:
+            type: object
+            additionalProperties: true
+            description: "Konteks tambahan opsional (field yang gagal, batas, dll)"
+
+# ── Endpoint ─────────────────────────────────────────────────────────
+
+endpoints:
+  # POST /api/v1/backup — kirim batch transaksi + simpan + ack per-batch
+  - method: POST
+    path: /backup
+    summary: "Kirim batch transaksi ke server dan simpan (backup)"
+    request:
+      content_type: "application/json"
+      body:
+        type: object
+        required: [user_id, start_date, end_date, transactions]
+        properties:
+          user_id:
+            type: string
+            format: uuid
+            description: "UUID anonymous device — dijadikan user id server"
+          start_date:
+            type: string
+            format: date
+            description: "Tanggal mulai rentang backup (YYYY-MM-DD)"
+          end_date:
+            type: string
+            format: date
+            description: "Tanggal selesai rentang backup (YYYY-MM-DD), >= start_date"
+          transactions:
+            type: array
+            maxItems: 500
+            items:
+              $ref: "#/definitions/Transaction"
+            description: "Batch transaksi. Maks 500 per request."
+    responses:
+      "200":
+        description: "Batch diterima dan disimpan. Ack per-batch."
+        body:
+          type: object
+          required: [status, backup_id, stored_count]
+          properties:
+            status:
+              type: string
+              const: ok
+            backup_id:
+              type: string
+              format: uuid
+              description: "ID rekaman backup pada tabel backups (per rentang)"
+            stored_count:
+              type: integer
+              minimum: 0
+              description: "Jumlah transaksi yang berhasil disimpan pada batch ini"
+      "400":
+        description: "Body tidak valid — user_id bukan UUID, tanggal bukan YYYY-MM-DD, end_date < start_date, atau transactions > 500. Tidak ada data yang disimpan."
+        body:
+          $ref: "#/definitions/Error"
+      "500":
+        description: "Kegagalan penyimpanan database"
+        body:
+          $ref: "#/definitions/Error"
+
+  # GET /api/v1/backup — restore data transaksi (idempoten)
+  - method: GET
+    path: /backup
+    summary: "Ambil data transaksi pada rentang tanggal (restore)"
+    request:
+      query_params:
+        - name: user_id
+          required: true
+          type: string
+          format: uuid
+          description: "UUID anonymous device"
+        - name: start_date
+          required: true
+          type: string
+          format: date
+          description: "Tanggal mulai rentang (YYYY-MM-DD)"
+        - name: end_date
+          required: true
+          type: string
+          format: date
+          description: "Tanggal selesai rentang (YYYY-MM-DD)"
+    responses:
+      "200":
+        description: "Data transaksi pada rentang. Restore tidak menghapus data server — GET idempoten."
+        body:
+          type: object
+          required: [transactions]
+          properties:
+            transactions:
+              type: array
+              items:
+                $ref: "#/definitions/Transaction"
+      "400":
+        description: "Salah satu param wajib kurang atau format tidak valid (user_id bukan UUID, tanggal bukan YYYY-MM-DD)"
+        body:
+          $ref: "#/definitions/Error"
+      "404":
+        description: "Tidak ada data transaksi pada rentang user_id + start_date..end_date"
+        body:
+          $ref: "#/definitions/Error"
+      "500":
+        description: "Kegagalan database"
+        body:
+          $ref: "#/definitions/Error"
+
+# ── Aturan bisnis & error mapping ────────────────────────────────────
+
+rules:
+  - id: BL-BE-001
+    text: "Skema endpoint POST/GET /api/v1/backup sesuai REQ-POS-006, 007, 010 — tanggal, user id, batch transaksi"
+
+error_mapping:
+  - condition: "user_id bukan UUID valid"
+    http_status: 400
+    error_code: invalid_param
+    message: "user_id harus berupa UUID"
+  - condition: "start_date/end_date bukan YYYY-MM-DD"
+    http_status: 400
+    error_code: invalid_param
+    message: "Tanggal harus format YYYY-MM-DD"
+  - condition: "end_date < start_date"
+    http_status: 400
+    error_code: invalid_param
+    message: "end_date tidak boleh sebelum start_date"
+  - condition: "transactions > 500 (POST)"
+    http_status: 400
+    error_code: invalid_param
+    message: "Batch maksimal 500 transaksi"
+  - condition: "param wajib kurang (GET: user_id, start_date, end_date)"
+    http_status: 400
+    error_code: invalid_param
+    message: "Param user_id, start_date, dan end_date wajib diisi"
+  - condition: "tidak ada data pada rentang (GET)"
+    http_status: 404
+    error_code: no_data
+    message: "Tidak ada data transaksi pada rentang tersebut"
+  - condition: "kegagalan server/database"
+    http_status: 500
+    error_code: server_error
+    message: "Terjadi kesalahan server"
