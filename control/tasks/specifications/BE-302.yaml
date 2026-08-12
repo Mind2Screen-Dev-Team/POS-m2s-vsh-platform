@@ -7,7 +7,7 @@ task:
   title: "Handler POST /api/v1/backup (kirim + simpan + ack per-batch)"
   type: backend-implementation
   project: pos-penglaris
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-006
     - REQ-POS-007

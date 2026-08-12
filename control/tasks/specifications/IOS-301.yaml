@@ -7,7 +7,7 @@ task:
   title: "iOS native: halaman backup + UUID + kirim/hapus per-batch + restore"
   type: mobile-implementation
   project: pos-penglaris
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-002
     - REQ-POS-003

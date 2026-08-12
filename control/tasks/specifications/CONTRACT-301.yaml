@@ -7,7 +7,7 @@ task:
   title: "Tulis API contract backup transaksi (POST + GET /api/v1/backup)"
   type: contract-change
   project: pos-penglaris
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-006
     - REQ-POS-007

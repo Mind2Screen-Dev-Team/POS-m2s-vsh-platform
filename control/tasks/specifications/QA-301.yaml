@@ -7,7 +7,7 @@ task:
   title: "QA end-to-end backup: kirim batch → ack → hapus device → restore"
   type: integration
   project: pos-penglaris
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-008
     - REQ-POS-009

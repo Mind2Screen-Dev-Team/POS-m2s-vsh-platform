@@ -7,7 +7,7 @@ task:
   title: "Handler GET /api/v1/backup (restore data transaksi)"
   type: backend-implementation
   project: pos-penglaris
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-010
   business_rule_ids:
