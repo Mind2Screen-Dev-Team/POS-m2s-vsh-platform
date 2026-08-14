@@ -1,6 +1,5 @@
-by: technical-lead-system-analyst
-reason: user approve contract fase 1
+by: code-reviewer
 schema_version: "1.0"
-status: technical-ready
+status: reviewing
 task_id: BE-303
-updated_at: "2026-08-12T09:41:54+07:00"
+updated_at: "2026-08-14T14:52:43+07:00"
