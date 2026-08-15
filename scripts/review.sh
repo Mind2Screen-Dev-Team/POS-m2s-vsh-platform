@@ -45,7 +45,7 @@ $dry_run || (cd "$WT" && printf '%s' \
   "Kamu adalah code-reviewer. Review diff PR task $task (read-only).
 Baca .task/contract.json. Tulis review report ke .task/handoff.json
 (role code-reviewer, wajib: decision, changed_files: [], tests, findings bila request-changes)." \
-  | claude --print --model "$MODEL" --allowedTools "$TOOLS" > /dev/null) || true
+  | ANTHROPIC_MODEL="$MODEL" claude --print --allowedTools "$TOOLS" > /dev/null) || true
 $dry_run && echo "[dry-run] claude --print --model $MODEL --allowedTools $TOOLS"
 
 echo "[review:$task] collect-review"
