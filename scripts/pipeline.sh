@@ -106,9 +106,10 @@ spawn_agent() {
   # Hapus handoff lama agar tidak terbaca ulang
   rm -f "$wt/.task/handoff.json"
   # Spawn claude di worktree; agent kerja + tulis .task/handoff.json
+  # Gunakan ANTHROPIC_MODEL env untuk model custom (cmb-agent-*), bukan --model
+  # yang hanya support model standar Claude (sonnet/opus/haiku).
   (cd "$wt" && printf '%s' "$prompt" \
-    | claude --print \
-        --model "$model" \
+    | ANTHROPIC_MODEL="$model" claude --print \
         --allowedTools "$tools" \
     > /dev/null) || true
   # Verifikasi handoff terbentuk
