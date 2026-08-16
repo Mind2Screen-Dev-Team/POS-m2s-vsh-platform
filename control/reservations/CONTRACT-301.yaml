@@ -1,0 +1,21 @@
+allowed_paths:
+    - contracts/CONTRACT-301.yaml
+branch: agent/CONTRACT-301-backup-contract
+created_at: "2026-08-12T09:46:51+07:00"
+forbidden_paths:
+    - .claude/**
+    - .task/**
+    - control/tasks/specifications/**
+    - docs/**
+    - cmd/**
+    - internal/**
+    - scripts/**
+owner_role: technical-lead-system-analyst
+pr_url: https://github.com/Mind2Screen-Dev-Team/POS-m2s-vsh-platform/pull/4
+repository: POS-m2s-vsh-platform
+reserved_paths:
+    - contracts/CONTRACT-301.yaml
+schema_version: "1.0"
+status: reserved-pending-merge
+task_id: CONTRACT-301
+worktree: /Users/candra/.m2s/worktrees/POS-m2s-vsh-platform/CONTRACT-301

@@ -1,0 +1,73 @@
+# BE-302 — Task Contract: POST Backup Handler
+
+schema_version: "1.0"
+
+task:
+  id: BE-302
+  title: "Handler POST /api/v1/backup (kirim + simpan + ack per-batch)"
+  type: backend-implementation
+  project: pos-penglaris
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-006
+    - REQ-POS-007
+    - REQ-POS-008
+    - REQ-POS-009
+  business_rule_ids:
+    - BL-BE-003
+    - BL-BE-005
+  contract_ids:
+    - CONTRACT-301
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-302-backup-post-handler
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+shared_file_ownership:
+  - path: internal/handler/router.go
+    owner_task_id: BE-303
+    owner_role: backend-engineer
+    rationale: "BE-303 menambah route GET /api/v1/backup pada router.go. BE-302 membuat berkas handler baru miliknya, tidak menulis router.go."
+
+inputs:
+  - contracts/CONTRACT-301.yaml
+
+acceptance_criteria:
+  - "POST /api/v1/backup memvalidasi user_id berupa UUID valid (400 bila tidak), start_date/end_date format YYYY-MM-DD (400 bila tidak), dan end >= start (400 bila tidak)"
+  - "Payload transactions[] maks 500; bila lebih, response 400 dengan error schema CONTRACT-301 tanpa menyimpan data"
+  - "Data transaksi disimpan ke tabel transactions (payload JSONB lengkap mulai dari user_id, tanggal, termasuk referensi produk/kategori/metode bayar), rekaman backups dibuat per rentang start/end"
+  - "Ack per-batch: setiap request batch mendapat 200 {status, backup_id, stored_count}"
+  - "Response 500 dengan error schema CONTRACT-301 bila terjadi kegagalan penyimpanan DB"
+  - "Unit test handler: UUID invalid, tanggal invalid, rentang terbalik, batch > 500, batch sukses, stored_count sesuai"
+
+quality_gates:
+  - go test ./...
+  - go vet ./...
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - data-loss risk found
