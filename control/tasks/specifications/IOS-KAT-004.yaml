@@ -1,0 +1,60 @@
+# IOS-KAT-004 — Task Contract: SwiftUI Pencarian & Filter
+
+schema_version: "1.0"
+
+task:
+  id: IOS-KAT-004
+  title: "Fitur pencarian dan filter produk di SwiftUI iOS"
+  type: frontend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-009
+  business_rule_ids:
+    - BL-IOS-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: ios-developer
+  repository: POS-ios
+  base_branch: develop
+  branch: agent/IOS-KAT-004-swiftui-search-filter
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - apps/ios/**
+    - ios/**
+    - Package.swift
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Search bar dengan API GET /products/search?q=<keyword>"
+  - "Picker filter kategori GET /products?category=<id>"
+  - "Kombinasi search + filter"
+  - "Sorting: nama, harga, stok"
+  - "Unit test: search, filter, sorting"
+
+quality_gates:
+  - swift build
+  - swift test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required

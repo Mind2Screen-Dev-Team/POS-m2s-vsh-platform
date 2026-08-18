@@ -1,0 +1,68 @@
+# QA-KAT-003 — Task Contract: E2E Test Mobile Katalog
+
+schema_version: "1.0"
+
+task:
+  id: QA-KAT-003
+  title: "End-to-end test untuk aplikasi mobile katalog"
+  type: test-authoring
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-006
+    - REQ-POS-KAT-007
+    - REQ-POS-KAT-008
+    - REQ-POS-KAT-009
+  business_rule_ids:
+    - BL-FE-KAT-001
+    - BL-IOS-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: qa-engineer
+  repository: POS-android
+  base_branch: develop
+  branch: agent/QA-KAT-003-e2e-test-mobile
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 90
+
+paths:
+  allowed:
+    - apps/android/**
+    - android/**
+    - ios/**
+    - tests/**
+    - buildScripts/**
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "E2E test Flutter: lihat daftar katalog, detail produk, tambah/edit/hapus"
+  - "E2E test Flutter: pencarian dan filter produk"
+  - "E2E test iOS: lihat daftar katalog, detail produk, tambah/edit/hapus"
+  - "E2E test iOS: pencarian dan filter produk"
+  - "Semua E2E test passing di masing-masing platform"
+  - "Test coverage minimal 70% untuk fitur katalog"
+
+quality_gates:
+  - cd tasks/android e2e-test
+  - cd tasks/ios e2e-test
+
+outputs:
+  - code
+  - e2e-tests
+  - test-report
+
+stop_conditions:
+  - test fails
+  - device unavailable
+  - backend not running

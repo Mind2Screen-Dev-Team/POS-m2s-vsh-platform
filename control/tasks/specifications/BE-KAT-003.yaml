@@ -1,0 +1,64 @@
+# BE-KAT-003 — Task Contract: API Endpoint Pencarian Produk
+
+schema_version: "1.0"
+
+task:
+  id: BE-KAT-003
+  title: "API endpoint pencarian dan filter produk (/api/v1/products/search, /api/v1/products/filter)"
+  type: backend-implementation
+  project: pos-katalog
+  status: draft
+  requirement_ids:
+    - REQ-POS-KAT-006
+    - REQ-POS-KAT-007
+  business_rule_ids:
+    - BL-BE-KAT-003
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-KAT-003-api-pencarian
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 45
+
+paths:
+  allowed:
+    - internal/handler/**
+    - internal/repository/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "GET /api/v1/products/search?q=<query> melakukan pencarian nama produk dengan LIKE (case-insensitive), hasil diurutkan per nama A-Z"
+  - "GET /api/v1/products/filter?category_id=<uuid> mengembalikan produk hanya kategorinya sama, hasil diurutkan per nama A-Z"
+  - "GET /api/v1/products/search?q=&category_id=<uuid> dapat digabung untuk pencarian dengan filter kategori"
+  - "Query pencarian case-insensitive dan toleran whitespace (trim)"
+  - "Response selalu array products yang sama seperti GET /api/v1/products"
+  - "Unit test handler: pencarian kosong, pencarian tidak ditemukan, filter kategori, kombinasi search+filter"
+
+quality_gates:
+  - go test ./internal/handler/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required (BE-KAT-001, BE-KAT-002)
+  - data-loss risk found

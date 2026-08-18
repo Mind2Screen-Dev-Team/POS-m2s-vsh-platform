@@ -1,0 +1,61 @@
+# IOS-KAT-003 — Task Contract: SwiftUI Form CRUD Produk
+
+schema_version: "1.0"
+
+task:
+  id: IOS-KAT-003
+  title: "Form CRUD produk di SwiftUI iOS"
+  type: frontend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-008
+  business_rule_ids:
+    - BL-IOS-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: ios-developer
+  repository: POS-ios
+  base_branch: develop
+  branch: agent/IOS-KAT-003-swiftui-form-crud
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - apps/ios/**
+    - ios/**
+    - Package.swift
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Form dengan field: nama, deskripsi, harga beli, harga jual, stok, kategori, foto"
+  - "Validasi input: semua field wajib diisi"
+  - "Picker kategori dari API GET /categories"
+  - "Pilih foto dari photos library"
+  - "Submit ke API POST /products"
+  - "Unit test: form validation, submission"
+
+quality_gates:
+  - swift build
+  - swift test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required

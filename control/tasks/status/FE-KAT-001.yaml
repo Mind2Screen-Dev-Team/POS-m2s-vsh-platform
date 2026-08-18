@@ -1,0 +1,6 @@
+task_id: "FE-KAT-001"
+type: "technical-ready"
+owner: "android-developer"
+status: "technical-ready"
+created_at: "2026-08-18T00:00:00Z"
+status_location: "control/tasks/status/FE-KAT-001.yaml"

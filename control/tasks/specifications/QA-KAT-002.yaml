@@ -1,0 +1,66 @@
+# QA-KAT-002 — Task Contract: Integration Test API Katalog
+
+schema_version: "1.0"
+
+task:
+  id: QA-KAT-002
+  title: "Integration test untuk API katalog produk"
+  type: test-authoring
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-001
+    - REQ-POS-KAT-003
+    - REQ-POS-KAT-004
+  business_rule_ids:
+    - BL-BE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: qa-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/QA-KAT-002-integration-test-api
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/handler/**
+    - tests/**
+    - go.mod
+    - Makefile
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Integration test: workflow lengkap CRUD produk via HTTP"
+  - "Integration test: workflow CRUD kategori + foreign key constraint"
+  - "Integration test: pencarian produk by nama (case insensitive)"
+  - "Integration test: filter produk by kategori"
+  - "Test error scenarios: 400 bad request, 404 not found, 409 conflict"
+  - "Test database isolation: set up/tear down per test"
+
+quality_gates:
+  - go test ./tests/integration/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - integration-tests
+  - test-report
+
+stop_conditions:
+  - test fails
+  - contract violation found

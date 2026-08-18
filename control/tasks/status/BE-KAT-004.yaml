@@ -1,0 +1,6 @@
+task_id: "BE-KAT-004"
+type: "technical-ready"
+owner: "backend-engineer"
+status: "technical-ready"
+created_at: "2026-08-18T00:00:00Z"
+status_location: "control/tasks/status/BE-KAT-004.yaml"

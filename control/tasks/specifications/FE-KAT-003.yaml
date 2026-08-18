@@ -1,0 +1,61 @@
+# FE-KAT-003 — Task Contract: Flutter Form CRUD Produk
+
+schema_version: "1.0"
+
+task:
+  id: FE-KAT-003
+  title: "Form CRUD produk di Flutter Android"
+  type: frontend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-008
+  business_rule_ids:
+    - BL-FE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: android-developer
+  repository: POS-android
+  base_branch: develop
+  branch: agent/FE-KAT-003-flutter-form-crud
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - lib/**
+    - test/**
+    - pubspec.yaml
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Form tambah produk dengan field: nama, deskripsi, harga beli, harga jual, stok, kategori, foto"
+  - "Validasi: nama wajib, harga beli/jual >= 0, stok >= 0"
+  - "Dropdown kategori mengambil dari API GET /categories"
+  - "Pilih foto dari gallery atau kamera"
+  - "Submit menghubungi API POST /products, redirect ke daftar setelah success"
+  - "Unit test: field validation, form submission, category dropdown"
+
+quality_gates:
+  - flutter analyze
+  - flutter test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required

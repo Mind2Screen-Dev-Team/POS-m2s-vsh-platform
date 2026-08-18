@@ -1,0 +1,60 @@
+# FE-KAT-002 — Task Contract: Flutter Detail Produk
+
+schema_version: "1.0"
+
+task:
+  id: FE-KAT-002
+  title: "Halaman detail produk di Flutter Android"
+  type: frontend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-007
+  business_rule_ids:
+    - BL-FE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: android-developer
+  repository: POS-android
+  base_branch: develop
+  branch: agent/FE-KAT-002-flutter-detail-produk
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - lib/**
+    - test/**
+    - pubspec.yaml
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - contracts/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Detail produk menampilkan foto, nama, deskripsi, harga beli, harga jual, stok, kategori"
+  - "Tombol Edit membuka form CRUD edit"
+  - "Tombol Hapus menampilkan konfirmasi dialog"
+  - "Navigasi kembali ke daftar katalog"
+  - "Unit test: renders detail, edit button navigates, delete shows confirmation"
+
+quality_gates:
+  - flutter analyze
+  - flutter test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
