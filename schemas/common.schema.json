@@ -165,7 +165,12 @@
         "dependency required",
         "forbidden path required",
         "migration required",
-        "data-loss risk found"
+        "data-loss risk found",
+        "test fails",
+        "coverage below threshold",
+        "contract violation found",
+        "device unavailable",
+        "backend not running"
       ]
     },
 
