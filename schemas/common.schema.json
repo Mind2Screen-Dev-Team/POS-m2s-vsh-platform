@@ -12,9 +12,9 @@
     },
 
     "taskId": {
-      "description": "Identitas task. Prefix menandai domain pengerjaan, contoh BE-101, FE-101, QA-207, WIRE-101.",
+      "description": "Identitas task. Prefix menandai domain pengerjaan, contoh BE-101, FE-101, QA-207, WIRE-101, BE-KAT-002.",
       "type": "string",
-      "pattern": "^[A-Z][A-Z0-9]*-[0-9]+$"
+      "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*-[0-9]+$"
     },
 
     "role": {
