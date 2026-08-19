@@ -7,7 +7,7 @@ task:
   title: "API endpoint CRUD produk (POST, GET, PUT, DELETE /api/v1/products)"
   type: backend-implementation
   project: pos-katalog
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-KAT-001
     - REQ-POS-KAT-002
@@ -63,5 +63,5 @@ outputs:
 
 stop_conditions:
   - contract change required
-  - dependency required (BE-KAT-001)
+  - dependency required
   - data-loss risk found

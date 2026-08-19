@@ -7,7 +7,7 @@ task:
   title: "API endpoint pencarian dan filter produk (/api/v1/products/search, /api/v1/products/filter)"
   type: backend-implementation
   project: pos-katalog
-  status: draft
+  status: technical-ready
   requirement_ids:
     - REQ-POS-KAT-006
     - REQ-POS-KAT-007
@@ -38,7 +38,7 @@ paths:
     - contracts/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "GET /api/v1/products/search?q=<query> melakukan pencarian nama produk dengan LIKE (case-insensitive), hasil diurutkan per nama A-Z"
@@ -60,5 +60,5 @@ outputs:
 
 stop_conditions:
   - contract change required
-  - dependency required (BE-KAT-001, BE-KAT-002)
+  - dependency required
   - data-loss risk found

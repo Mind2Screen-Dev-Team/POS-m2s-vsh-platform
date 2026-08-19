@@ -40,7 +40,7 @@ paths:
     - .task/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "Unit test repository: tabel products & categories, CRUD semua field"
