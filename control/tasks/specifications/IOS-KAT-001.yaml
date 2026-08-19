@@ -30,15 +30,14 @@ execution:
 
 paths:
   allowed:
-    - apps/ios/**
-    - ios/**
+    - Sources/POSiOS/**
     - Package.swift
   forbidden:
     - .claude/**
     - .task/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "List menampilkan produk dengan foto, nama, harga jual, stok"

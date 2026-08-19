@@ -37,7 +37,7 @@ paths:
     - .task/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "Detail produk menampilkan foto, nama, deskripsi, harga beli, harga jual, stok, kategori"

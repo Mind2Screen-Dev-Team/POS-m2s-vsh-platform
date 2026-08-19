@@ -43,7 +43,7 @@ paths:
     - .task/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "E2E test Flutter: lihat daftar katalog, detail produk, tambah/edit/hapus"

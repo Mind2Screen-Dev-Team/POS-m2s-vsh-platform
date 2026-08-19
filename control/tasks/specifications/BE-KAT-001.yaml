@@ -41,7 +41,7 @@ paths:
     - contracts/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "Tabel products: id UUID (PK), nama string, deskripsi text nullable, harga_beli number, harga_jual number, stok integer, foto_url string nullable, kategori_id UUID FK nullable, created_at timestamp, updated_at timestamp nullable"

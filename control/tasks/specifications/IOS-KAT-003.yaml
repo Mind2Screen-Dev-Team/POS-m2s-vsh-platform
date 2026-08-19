@@ -37,7 +37,7 @@ paths:
     - .task/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "Form dengan field: nama, deskripsi, harga beli, harga jual, stok, kategori, foto"

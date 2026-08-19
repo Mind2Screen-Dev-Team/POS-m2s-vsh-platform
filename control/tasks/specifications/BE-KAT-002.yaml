@@ -40,7 +40,7 @@ paths:
     - contracts/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "POST /api/v1/products membuat produk baru dengan field: nama, deskripsi, harga_beli, harga_jual, stok, kategori_id, foto_url (semua validasi wajib kecuali deskripsi/foto_url)"

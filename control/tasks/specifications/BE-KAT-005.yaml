@@ -40,7 +40,7 @@ paths:
     - contracts/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
 
 acceptance_criteria:
   - "Migration file 0001_create_tables.up.sql membuat tabel categories dulu, lalu products"

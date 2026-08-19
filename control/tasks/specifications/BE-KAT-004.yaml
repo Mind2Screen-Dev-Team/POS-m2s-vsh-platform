@@ -41,7 +41,7 @@ paths:
     - contracts/**
 
 inputs:
-  - contracts/CONTRACT-KAT-001.yaml
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
   - contracts/CONTRACT-301.yaml
 
 acceptance_criteria:
