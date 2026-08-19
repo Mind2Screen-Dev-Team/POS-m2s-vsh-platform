@@ -44,6 +44,8 @@ on:
   pull_request:
     branches: [develop, staging, main]
   merge_group:
+  workflow_dispatch:
+    branches: [develop] # Manual trigger for verification
 
 # Read-only: workflow ini hanya memvalidasi, tidak menulis apa pun ke repo.
 permissions:
