@@ -1,0 +1,67 @@
+# BE-KAT-002 — Task Contract: API Endpoint CRUD Produk
+
+schema_version: "1.0"
+
+task:
+  id: BE-KAT-002
+  title: "API endpoint CRUD produk (POST, GET, PUT, DELETE /api/v1/products)"
+  type: backend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-001
+    - REQ-POS-KAT-002
+    - REQ-POS-KAT-003
+    - REQ-POS-KAT-004
+  business_rule_ids:
+    - BL-BE-KAT-002
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-KAT-002-api-crud-produk
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 100
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - internal/handler/**
+    - internal/repository/**
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "POST /api/v1/products membuat produk baru dengan field: nama, deskripsi, harga_beli, harga_jual, stok, kategori_id, foto_url (semua validasi wajib kecuali deskripsi/foto_url)"
+  - "GET /api/v1/products mengembalikan daftar produk dengan pagination support (limit/offset query params)"
+  - "GET /api/v1/products/:id mengembalikan detail produk by UUID, 404 bila tidak ada"
+  - "PUT /api/v1/products/:id mengupdate semua field produk, 404 bila tidak ada"
+  - "DELETE /api/v1/products/:id menghapus produk, 404 bila tidak ada, 204 response"
+  - "Semua endpoint mengembalikan 400 bila validasi gagal (field kosong, tipe data salah)"
+  - "Unit test handler: masing-masing endpoint dengan sukses, validasi error, 404"
+
+quality_gates:
+  - go test ./internal/handler/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - data-loss risk found

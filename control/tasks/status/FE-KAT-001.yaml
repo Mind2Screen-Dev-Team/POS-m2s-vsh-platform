@@ -1,0 +1,7 @@
+task_id: "FE-KAT-001"
+task_id: "FE-KAT-001"
+type: "draft"
+owner: "android-developer"
+status: "draft"
+created_at: "2026-08-20T00:00:00Z"
+status_location: "control/tasks/status/FE-KAT-001.yaml"

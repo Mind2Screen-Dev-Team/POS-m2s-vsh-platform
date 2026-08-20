@@ -1,0 +1,6 @@
+task_id: "IOS-KAT-004"
+type: "technical-ready"
+owner: "ios-developer"
+status: "technical-ready"
+created_at: "2026-08-18T00:00:00Z"
+status_location: "control/tasks/status/IOS-KAT-004.yaml"
