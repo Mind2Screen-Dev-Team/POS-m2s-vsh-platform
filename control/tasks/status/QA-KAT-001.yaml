@@ -1,0 +1,6 @@
+task_id: "QA-KAT-001"
+type: "draft"
+owner: "qa-engineer"
+status: "draft"
+created_at: "2026-08-20T00:00:00Z"
+status_location: "control/tasks/status/QA-KAT-001.yaml"
