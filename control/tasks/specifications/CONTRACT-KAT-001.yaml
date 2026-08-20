@@ -1,0 +1,182 @@
+# Task Specification — CONTRACT-KAT-001 API Contract Katalog
+# FC-304 "POS Katalog"
+
+task_id: "CONTRACT-KAT-001"
+title: "API Contract untuk Modul Katalog Produk"
+description: |
+  Mendefinisikan kontrak API yang standar untuk modul katalog produk POS Katalog.
+  Kontrak mencakup endpoint CRUD produk, pencarian produk, dan manajemen kategori.
+  Semua endpoint menggunakan format JSON dan mengikuti pola error handling
+  yang diterima di CONTRACT-301.
+
+priority: high
+phase: "Fase 1"
+
+# Ownership
+owner: "technical-lead-system-analyst"
+created_by: "project-manager"
+created_at: "2026-08-17"
+
+# Repository & Branch
+repository: "POS-m2s-vsh-platform"
+branch: "agent/CONTRACT-KAT-001-api-katalog"
+
+# Allowed Paths
+allowed_paths:
+  - "contracts/"
+  - "schemas/"
+  - "control/tasks/specifications/"
+  - "docs/operator/"
+
+# Dependencies
+dependency: []
+
+# Quality Gates
+quality_gates:
+  - "Schema validation: JSON Schema valid"
+  - "Contract review approval"
+
+# Status Tracking
+status: "technical-ready"
+status_owner: "technical-lead-system-analyst"
+status_location: "control/tasks/status/CONTRACT-KAT-001.yaml"
+
+# Contract Details
+contract_details:
+  base_url: "/api/v1"
+  content_type: "application/json"
+  auth_method: "anonymous-device-id"
+  
+  endpoints:
+    - name: "CRUD Produk"
+      methods:
+        - method: "POST"
+          path: "/products"
+          description: "Buat produk baru"
+          request: "ProductCreateRequest"
+          response: "Product"
+          http_code: 201
+        - method: "GET"
+          path: "/products"
+          description: "Daftar semua produk"
+          response: "ProductList"
+          http_code: 200
+        - method: "GET"
+          path: "/products/:id"
+          description: "Detail produk by ID"
+          response: "Product"
+          http_code: 200
+        - method: "PUT"
+          path: "/products/:id"
+          description: "Update produk"
+          request: "ProductUpdateRequest"
+          response: "Product"
+          http_code: 200
+        - method: "DELETE"
+          path: "/products/:id"
+          description: "Hapus produk"
+          http_code: 204
+    
+    - name: "Pencarian Produk"
+      methods:
+        - method: "GET"
+          path: "/products/search"
+          description: "Cari produk by nama (query param: q)"
+          response: "ProductList"
+          http_code: 200
+        - method: "GET"
+          path: "/products/filter"
+          description: "Filter produk by kategori (query param: category_id)"
+          response: "ProductList"
+          http_code: 200
+    
+    - name: "Manajemen Kategori"
+      methods:
+        - method: "POST"
+          path: "/categories"
+          description: "Buat kategori baru"
+          request: "CategoryCreateRequest"
+          response: "Category"
+          http_code: 201
+        - method: "GET"
+          path: "/categories"
+          description: "Daftar semua kategori"
+          response: "CategoryList"
+          http_code: 200
+        - method: "PUT"
+          path: "/categories/:id"
+          description: "Update kategori"
+          request: "CategoryUpdateRequest"
+          response: "Category"
+          http_code: 200
+        - method: "DELETE"
+          path: "/categories/:id"
+          description: "Hapus kategori"
+          http_code: 204
+
+  schemas:
+    Product:
+      type: object
+      required: [id, nama, harga_jual, stok, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 255
+        deskripsi:
+          type: string
+          maxLength: 1000
+        harga_beli:
+          type: number
+          minimum: 0
+        harga_jual:
+          type: number
+          minimum: 0
+        stok:
+          type: integer
+          minimum: 0
+        kategori_id:
+          type: string
+          format: uuid
+          nullable: true
+        foto_url:
+          type: string
+          format: uri
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      required: [id, nama]
+      properties:
+        id:
+          type: string
+          format: uuid
+        nama:
+          type: string
+          minLength: 1
+          maxLength: 100
+
+# Success Criteria
+success_criteria:
+  - "Kontrak API lengkap dan konsisten"
+  - "Semua endpoint didokumentasikan dengan request/response schema"
+  - "Error handling standar diterapkan"
+  - "TL/SA setuju dengan kontrak"
+  - "File kontrak validasi JSON Schema"
+
+# Acceptance Criteria
+acceptance_criteria:
+  - Contract sudah validasi oleh JSON Schema validator
+  - Semua endpoint memiliki definisi request dan response yang jelas
+  - Error mapping sudah ditentukan (400, 404, 500)
+  - TL/SA sudah menandatangani (status: technical-ready)
+

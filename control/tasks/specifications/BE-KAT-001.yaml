@@ -1,0 +1,67 @@
+# BE-KAT-001 — Task Contract: Database Schema Katalog Produk
+
+schema_version: "1.0"
+
+task:
+  id: BE-KAT-001
+  title: "Database schema untuk tabel products dan categories"
+  type: backend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-001
+    - REQ-POS-KAT-004
+    - REQ-POS-KAT-005
+  business_rule_ids:
+    - BL-BE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-KAT-001-db-schema-katalog
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 45
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - go.mod
+    - Makefile
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Tabel products: id UUID (PK), nama string, deskripsi text nullable, harga_beli number, harga_jual number, stok integer, foto_url string nullable, kategori_id UUID FK nullable, created_at timestamp, updated_at timestamp nullable"
+  - "Tabel categories: id UUID (PK), nama string, created_at timestamp"
+  - "Foreign key products.kategori_id -> categories.id dengan ON DELETE SET NULL"
+  - "Index pada products.nama, products.harga_jual, products.stok, products.kategori_id"
+  - "Migration file ditulis di internal/repository/migration/ dengan urutannya sesuai dependency (categories dulu, products setelah)"
+  - "Unit test repository: buat tabel, insert produk/kategori, query dengan filter"
+
+quality_gates:
+  - go test ./internal/repository/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - data-loss risk found

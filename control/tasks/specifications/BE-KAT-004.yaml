@@ -1,0 +1,68 @@
+# BE-KAT-004 — Task Contract: API Endpoint Kategori
+
+schema_version: "1.0"
+
+task:
+  id: BE-KAT-004
+  title: "API endpoints manajemen kategori produk"
+  type: backend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-003
+    - REQ-POS-KAT-004
+  business_rule_ids:
+    - BL-BE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-KAT-004-api-kategori
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 45
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+    - go.mod
+    - Makefile
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+  - contracts/CONTRACT-301.yaml
+
+acceptance_criteria:
+  - "POST /api/v1/categories membuat kategori baru, mengembalikan 201 dengan objek Category"
+  - "GET /api/v1/categories mengembalikan daftar semua kategori dengan paginasi"
+  - "PUT /api/v1/categories/:id mengupdate nama kategori, mengembalikan objek Category"
+  - "DELETE /api/v1/categories/:id menghapus kategori, mengembalikan 204"
+  - "Error handling: 400 untuk validasi, 404 untuk tidak ditemukan, 409 untuk konflik (nama duplikat)"
+  - "Unit test handler: buat, list, update, delete kategori + error case"
+
+quality_gates:
+  - go test ./internal/handler/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
+  - data-loss risk found

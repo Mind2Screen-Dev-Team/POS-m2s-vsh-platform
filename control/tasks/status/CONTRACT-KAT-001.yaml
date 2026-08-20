@@ -1,0 +1,6 @@
+task_id: "CONTRACT-KAT-001"
+type: "technical-ready"
+owner: "technical-lead-system-analyst"
+status: "technical-ready"
+created_at: "2026-08-17T00:00:00Z"
+status_location: "control/tasks/status/CONTRACT-KAT-001.yaml"

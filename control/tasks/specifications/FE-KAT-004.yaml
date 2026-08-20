@@ -1,0 +1,61 @@
+# FE-KAT-004 — Task Contract: Flutter Pencarian & Filter
+
+schema_version: "1.0"
+
+task:
+  id: FE-KAT-004
+  title: "Fitur pencarian dan filter produk di Flutter Android"
+  type: frontend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-009
+  business_rule_ids:
+    - BL-FE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: android-developer
+  repository: POS-android
+  base_branch: develop
+  branch: agent/FE-KAT-004-flutter-search-filter
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 80
+  timeout_minutes: 60
+
+paths:
+  allowed:
+    - lib/**
+    - test/**
+    - pubspec.yaml
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Search bar dengan debounce 300ms, panggil GET /products/search?q=<keyword>"
+  - "Dropdown filter kategori, panggil GET /products?category=<id>"
+  - "Kombinasi search + filter hasil fetch terkait"
+  - "Sorting: nama A-Z, harga terendah-tinggi, stok terbanyak-terbawah"
+  - "Loading indicator saat fetch data"
+  - "Unit test: search query, filter by category, sorting"
+
+quality_gates:
+  - flutter analyze
+  - flutter test
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required

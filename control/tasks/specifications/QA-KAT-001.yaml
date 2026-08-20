@@ -1,0 +1,64 @@
+# QA-KAT-001 — Task Contract: Unit Test Backend Katalog
+
+schema_version: "1.0"
+
+task:
+  id: QA-KAT-001
+  title: "Unit test untuk backend katalog produk"
+  type: test-authoring
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-002
+    - REQ-POS-KAT-004
+  business_rule_ids:
+    - BL-BE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: qa-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/QA-KAT-001-unit-test-backend
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 60
+  timeout_minutes: 45
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/handler/**
+    - tests/**
+    - go.mod
+    - Makefile
+  forbidden:
+    - .claude/**
+    - .task/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Unit test repository: tabel products & categories, CRUD semua field"
+  - "Unit test handler: endpoint CRUD produk + kategori, error handling"
+  - "Test coverage minimal 80% untuk internal/repository/**"
+  - "Test coverage minimal 70% untuk internal/handler/**"
+  - "Semua test passing: go test ./internal/repository/... ./internal/handler/..."
+
+quality_gates:
+  - go test ./internal/repository/... ./internal/handler/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - test-report
+
+stop_conditions:
+  - test fails
+  - coverage below threshold

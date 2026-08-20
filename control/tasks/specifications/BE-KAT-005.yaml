@@ -1,0 +1,64 @@
+# BE-KAT-005 — Task Contract: Database Migration Katalog
+
+schema_version: "1.0"
+
+task:
+  id: BE-KAT-005
+  title: "Database migration setup tabel products dan categories"
+  type: backend-implementation
+  project: pos-katalog
+  status: technical-ready
+  requirement_ids:
+    - REQ-POS-KAT-001
+    - REQ-POS-KAT-004
+  business_rule_ids:
+    - BL-BE-KAT-001
+  contract_ids:
+    - CONTRACT-KAT-001
+
+ownership:
+  role: backend-engineer
+  repository: POS-backend
+  base_branch: develop
+  branch: agent/BE-KAT-005-db-migration
+
+execution:
+  isolation: worktree
+  background: true
+  max_turns: 60
+  timeout_minutes: 30
+
+paths:
+  allowed:
+    - internal/repository/**
+    - internal/config/**
+    - go.mod
+    - Makefile
+  forbidden:
+    - .claude/**
+    - .task/**
+    - contracts/**
+
+inputs:
+  - control/tasks/specifications/CONTRACT-KAT-001.yaml
+
+acceptance_criteria:
+  - "Migration file 0001_create_tables.up.sql membuat tabel categories dulu, lalu products"
+  - "Migration file 0002_create_indexes.up.sql membuat index pada nama, harga_jual, stok, kategori_id"
+  - "Foreign key products.kategori_id -> categories.id dengan ON DELETE SET NULL"
+  - "Rollback file (.down.sql) menghapus products dulu, lalu categories"
+  - "Unit test migration: jalankan up + down, verifikasi tabel dan index"
+
+quality_gates:
+  - go test ./internal/repository/...
+  - go vet ./...
+  - make verify
+
+outputs:
+  - code
+  - unit-tests
+  - pull-request
+
+stop_conditions:
+  - contract change required
+  - dependency required
