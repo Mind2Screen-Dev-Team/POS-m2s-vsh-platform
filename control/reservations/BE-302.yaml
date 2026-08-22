@@ -1,0 +1,28 @@
+allowed_paths:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+branch: agent/BE-302-backup-post-handler
+created_at: "2026-08-15T22:58:15+07:00"
+forbidden_paths:
+    - .claude/**
+    - .task/**
+    - contracts/**
+owner_role: backend-engineer
+pr_url: https://github.com/Mind2Screen-Dev-Team/POS-backend/pull/7
+released_at: "2026-08-18T11:05:26+07:00"
+released_by: human
+repository: POS-backend
+reserved_paths:
+    - internal/repository/**
+    - internal/config/**
+    - internal/handler/**
+schema_version: "1.0"
+shared_file_ownership:
+    - owner_role: backend-engineer
+      owner_task_id: BE-303
+      path: internal/handler/router.go
+      rationale: BE-303 menambah route GET /api/v1/backup pada router.go. BE-302 membuat berkas handler baru miliknya, tidak menulis router.go.
+status: cancelled
+task_id: BE-302
+worktree: /Users/candra/.m2s/worktrees/POS-backend/BE-302

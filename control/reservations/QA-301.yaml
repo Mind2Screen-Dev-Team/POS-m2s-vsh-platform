@@ -1,0 +1,24 @@
+allowed_paths:
+    - qa/CONTRACT-301/**
+    - control/tasks/status/**
+branch: agent/QA-301-backup-e2e
+created_at: "2026-08-18T09:10:48+07:00"
+forbidden_paths:
+    - .claude/**
+    - .task/**
+    - contracts/**
+    - docs/**
+    - cmd/**
+    - internal/**
+    - scripts/**
+owner_role: qa-engineer
+released_at: "2026-08-18T09:29:37+07:00"
+released_by: runner
+repository: POS-m2s-vsh-platform
+reserved_paths:
+    - qa/CONTRACT-301/**
+    - control/tasks/status/**
+schema_version: "1.0"
+status: cancelled
+task_id: QA-301
+worktree: /Users/candra/.m2s/worktrees/POS-m2s-vsh-platform/QA-301

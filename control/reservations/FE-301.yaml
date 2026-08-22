@@ -1,0 +1,23 @@
+allowed_paths:
+    - lib/**
+    - test/**
+    - pubspec.yaml
+branch: agent/FE-301-flutter-backup
+created_at: "2026-08-14T11:23:01+07:00"
+forbidden_paths:
+    - .claude/**
+    - .task/**
+    - contracts/**
+owner_role: android-developer
+pr_url: https://github.com/Mind2Screen-Dev-Team/POS-android/pull/5
+released_at: "2026-08-18T11:12:15+07:00"
+released_by: runner
+repository: POS-android
+reserved_paths:
+    - lib/**
+    - test/**
+    - pubspec.yaml
+schema_version: "1.0"
+status: cancelled
+task_id: FE-301
+worktree: /Users/candra/.m2s/worktrees/POS-android/FE-301

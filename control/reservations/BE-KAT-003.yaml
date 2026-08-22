@@ -1,0 +1,28 @@
+allowed_paths:
+    - internal/handler/search_handler.go
+    - internal/handler/filter_handler.go
+    - internal/handler/search_handler_test.go
+    - internal/handler/filter_handler_test.go
+    - internal/handler/product_handler.go
+    - internal/repository/product_repository.go
+    - internal/repository/product_repository_test.go
+branch: agent/BE-KAT-003-api-pencarian
+created_at: "2026-08-20T13:34:45+07:00"
+forbidden_paths:
+    - .claude/**
+    - .task/**
+    - contracts/**
+owner_role: backend-engineer
+repository: POS-backend
+reserved_paths:
+    - internal/handler/search_handler.go
+    - internal/handler/filter_handler.go
+    - internal/handler/search_handler_test.go
+    - internal/handler/filter_handler_test.go
+    - internal/handler/product_handler.go
+    - internal/repository/product_repository.go
+    - internal/repository/product_repository_test.go
+schema_version: "1.0"
+status: active
+task_id: BE-KAT-003
+worktree: /Users/candra/.m2s/worktrees/POS-backend/BE-KAT-003
