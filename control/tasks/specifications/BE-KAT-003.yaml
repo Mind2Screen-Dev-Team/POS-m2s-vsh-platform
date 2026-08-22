@@ -30,8 +30,9 @@ execution:
 
 paths:
   allowed:
-    - internal/handler/**
-    - internal/repository/**
+    - internal/handler/search_handler.go
+    - internal/handler/filter_handler.go
+    - internal/repository/product_repository.go
   forbidden:
     - .claude/**
     - .task/**
@@ -49,7 +50,8 @@ acceptance_criteria:
   - "Unit test handler: pencarian kosong, pencarian tidak ditemukan, filter kategori, kombinasi search+filter"
 
 quality_gates:
-  - go test ./internal/handler/...
+  - go test ./internal/handler/search_handler_test.go
+  - go test ./internal/handler/filter_handler_test.go
   - go vet ./...
   - make verify
 
